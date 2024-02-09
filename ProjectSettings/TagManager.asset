@@ -11,8 +11,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - SolidObjects
+  - GrassPokemon
   - 
   - 
   - 
@@ -49,4 +49,7 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 2086638909
+    locked: 0
+  - name: Foreground+
+    uniqueID: 1434121725
     locked: 0
