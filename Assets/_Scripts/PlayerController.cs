@@ -9,7 +9,8 @@ public class PlayerController : MonoBehaviour
     public float speed;
     private Vector2 input;
     private Animator _animator;
-    public LayerMask solidObjectsLayer;
+    public LayerMask solidObjectsLayer, pokemonLayer;
+    public int PokemonPercentage;
 
     void Awake()
     {
@@ -61,6 +62,8 @@ public class PlayerController : MonoBehaviour
 
         transform.position = destination;
         isMoving = false;
+
+        CheckForPokemonEncounter();
     }
 
     /// <summary>
@@ -76,6 +79,17 @@ public class PlayerController : MonoBehaviour
         }
 
         return true;
+    }
+
+    private void CheckForPokemonEncounter ()
+    {
+        if (Physics2D.OverlapCircle(transform.position, 0.2f, pokemonLayer) != null)
+        {
+            if (Random.Range(0,100) < PokemonPercentage)
+            {
+                Debug.Log("Empezar batalla pokemon");
+            }
+        }
     }
 
 }
