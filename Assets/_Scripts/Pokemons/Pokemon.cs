@@ -35,7 +35,7 @@ public class Pokemon
     {
         _base = pkmnBase;
         _level = pkmnLevel;
-        _hp = _base.MaxHp;
+        _hp = MaxHP;
 
         _moves = new List<Move>();
         foreach (var lMove in _base.LearnableMoves)
@@ -47,12 +47,12 @@ public class Pokemon
 
             if(_moves.Count >= 4)
             {
-                break;
+                break; //Comportamiento de qué hará si el pkmn tiene > 4 movimientos
             }
         }
     }
 
-    public int MaxHP => Mathf.FloorToInt((_base.MaxHp * _level)/100.0f) + 1;
+    public int MaxHP => Mathf.FloorToInt((_base.MaxHp * _level)/20.0f) + 1;
     public int Attack => Mathf.FloorToInt((_base.Attack * _level)/100.0f) + 1;
     public int Defense => Mathf.FloorToInt((_base.Defense * _level)/100.0f) + 1;
     public int SpAttack => Mathf.FloorToInt((_base.SpAttack * _level)/100.0f) + 1;
