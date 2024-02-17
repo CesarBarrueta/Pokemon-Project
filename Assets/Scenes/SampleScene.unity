@@ -8953,6 +8953,7 @@ MonoBehaviour:
   enemyUnit: {fileID: 245028327}
   enemyHUD: {fileID: 380571815}
   battleDialogBox: {fileID: 1747498898}
+  state: 0
 --- !u!1 &791124528
 GameObject:
   m_ObjectHideFlags: 0
@@ -9069,7 +9070,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 240.12, y: -0}
+  m_AnchoredPosition: {x: 240.12, y: 0}
   m_SizeDelta: {x: 205.28, y: 107.25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &803084916
@@ -15433,6 +15434,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogText: {fileID: 791124530}
+  actionSelect: {fileID: 1381976646}
+  moveSelect: {fileID: 1377890989}
+  moveDescription: {fileID: 803084914}
+  actionsTexts:
+  - {fileID: 1545303549}
+  - {fileID: 180990012}
+  movesTexts:
+  - {fileID: 299033634}
+  - {fileID: 1317038602}
+  - {fileID: 1461326028}
+  - {fileID: 782087572}
+  ppText: {fileID: 1385788228}
+  typeText: {fileID: 449607255}
   charactersPerSecond: 10
 --- !u!1 &1757287039
 GameObject:
