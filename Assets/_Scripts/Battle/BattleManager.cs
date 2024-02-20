@@ -41,14 +41,14 @@ public class BattleManager : MonoBehaviour
         yield return battleDialogBox.SetDialog($"A wild {enemyUnit.Pokemon.Base.Name} appeared!");
         yield return new WaitForSeconds(1.0f);
 
-        //TODO: Comparar speed de EnemyUnit y PlayerUnit para decidir quien ataca primero}
+        //TODO: Comparar speed de EnemyUnit y PlayerUnit para decidir quien ataca primero
         if(enemyUnit.Pokemon.Speed > playerUnit.Pokemon.Speed)
         {
-            StartCoroutine(battleDialogBox.SetDialog($"Enemy {enemyUnit.Pokemon.Base.Name} attacks first"));
+            yield return battleDialogBox.SetDialog($"Enemy {enemyUnit.Pokemon.Base.Name} attacks first");
             EnemyAction();
         }else
         {
-            StartCoroutine(battleDialogBox.SetDialog($"{playerUnit.Pokemon.Base.Name} attacks first"));
+            yield return battleDialogBox.SetDialog($"{playerUnit.Pokemon.Base.Name} attacks first");
             PlayerAction();
         }
 
@@ -58,11 +58,65 @@ public class BattleManager : MonoBehaviour
     {
         state = BattleState.PlayerSelectAction;
         StartCoroutine(battleDialogBox.SetDialog("Select an action"));
+        
+        battleDialogBox.ToggleDialogText(true);
         battleDialogBox.ToggleActionsText(true);
+        battleDialogBox.ToggleMoves(false);
+
+        currentSelectedAction = 0;
+        battleDialogBox.SelectAction(currentSelectedAction);
+    }
+
+    public void PlayerMovement ()
+    {
+        state = BattleState.PlayerMove;
+
+        battleDialogBox.ToggleDialogText(false);
+        battleDialogBox.ToggleActionsText(false);
+        battleDialogBox.ToggleMoves(true);
+
+
     }
 
     public void EnemyAction()
     {
 
+    }
+
+    private int currentSelectedAction;
+    private float timeSinceLastClick;
+    public float timeBetweenClicks = 1.0f;
+    private void HandlePlayerActionSelection()
+    {
+        if(timeSinceLastClick < timeBetweenClicks)
+        {
+            return;
+        }
+
+        if(Input.GetAxisRaw("Vertical") != 0)
+        {
+            timeSinceLastClick = 0;
+            currentSelectedAction = (currentSelectedAction++) % 2;
+            battleDialogBox.SelectAction(currentSelectedAction);
+        }
+        if(Input.GetAxisRaw("Submit") != 0)
+        {
+            timeSinceLastClick = 0;
+            if(currentSelectedAction == 0)
+            {
+                PlayerMovement();
+            }else if(currentSelectedAction == 1)
+            {
+                //TODO: Run
+            }
+        }
+    }
+
+    private void Update() {
+        timeSinceLastClick += Time.deltaTime;
+        if(state == BattleState.PlayerSelectAction)
+        {
+            HandlePlayerActionSelection();
+        }
     }
 }

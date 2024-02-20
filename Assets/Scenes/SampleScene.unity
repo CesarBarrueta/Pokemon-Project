@@ -620,7 +620,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!81 &519420029
 AudioListener:
   m_ObjectHideFlags: 0
@@ -8954,6 +8954,7 @@ MonoBehaviour:
   enemyHUD: {fileID: 380571815}
   battleDialogBox: {fileID: 1747498898}
   state: 0
+  timeBetweenClicks: 1
 --- !u!1 &791124528
 GameObject:
   m_ObjectHideFlags: 0
@@ -15448,6 +15449,7 @@ MonoBehaviour:
   ppText: {fileID: 1385788228}
   typeText: {fileID: 449607255}
   charactersPerSecond: 10
+  selectedColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1 &1757287039
 GameObject:
   m_ObjectHideFlags: 0
