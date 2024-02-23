@@ -35,6 +35,8 @@ public class BattleManager : MonoBehaviour
         playerUnit.SetupPokemon();
         playerHUD.SetPkmnData(playerUnit.Pokemon);
 
+        battleDialogBox.SetPokemonMoves(playerUnit.Pokemon.Moves);
+
         enemyUnit.SetupPokemon();
         enemyHUD.SetPkmnData(enemyUnit.Pokemon);
 
@@ -63,7 +65,7 @@ public class BattleManager : MonoBehaviour
         battleDialogBox.ToggleActionsText(true);
         battleDialogBox.ToggleMoves(false);
 
-        currentSelectedAction = 0;
+        //currentSelectedAction = 0;
         battleDialogBox.SelectAction(currentSelectedAction);
     }
 
@@ -75,7 +77,8 @@ public class BattleManager : MonoBehaviour
         battleDialogBox.ToggleActionsText(false);
         battleDialogBox.ToggleMoves(true);
 
-
+        currentSelectedMove = 0;
+        battleDialogBox.SelectMove(currentSelectedMove, playerUnit.Pokemon.Moves[currentSelectedMove]);
     }
 
     public void EnemyAction()
@@ -96,9 +99,10 @@ public class BattleManager : MonoBehaviour
         if(Input.GetAxisRaw("Vertical") != 0)
         {
             timeSinceLastClick = 0;
-            currentSelectedAction = (currentSelectedAction++) % 2;
+            currentSelectedAction = (currentSelectedAction + 1) % 2;
             battleDialogBox.SelectAction(currentSelectedAction);
         }
+
         if(Input.GetAxisRaw("Submit") != 0)
         {
             timeSinceLastClick = 0;
@@ -112,11 +116,54 @@ public class BattleManager : MonoBehaviour
         }
     }
 
+    private int currentSelectedMove;
+    private void HandlePlayerMoveSelector()
+    {
+        if(timeSinceLastClick < timeBetweenClicks)
+        {
+            return;
+        }
+
+        if(Input.GetAxisRaw("Vertical") != 0)
+        {
+            timeSinceLastClick = 0;
+            var oldSelectedMove = currentSelectedMove;
+            currentSelectedMove = (currentSelectedMove + 2) % 4;
+            //Bloquea que se pueda apuntar a los movimientos vacíos
+            if(currentSelectedMove >= playerUnit.Pokemon.Moves.Count)
+            {
+                currentSelectedMove = oldSelectedMove;
+            }
+            battleDialogBox.SelectMove(currentSelectedMove, playerUnit.Pokemon.Moves[currentSelectedMove]);
+        } else if(Input.GetAxisRaw("Horizontal") != 0)
+        {
+            timeSinceLastClick = 0;
+            var oldSelectedMove = currentSelectedMove;
+            
+            if(currentSelectedMove <= 1)
+            {
+                currentSelectedMove = (currentSelectedMove + 1) % 2;
+            } else 
+            {
+                currentSelectedMove = (currentSelectedMove + 1) % 2 + 2;
+            }
+            //Bloquea que se pueda apuntar a los movimientos vacíos
+            if(currentSelectedMove >= playerUnit.Pokemon.Moves.Count)
+            {
+                currentSelectedMove = oldSelectedMove;
+            }
+            battleDialogBox.SelectMove(currentSelectedMove, playerUnit.Pokemon.Moves[currentSelectedMove]);
+        }
+    }
+
     private void Update() {
         timeSinceLastClick += Time.deltaTime;
         if(state == BattleState.PlayerSelectAction)
         {
             HandlePlayerActionSelection();
+        } else if(state == BattleState.PlayerMove)
+        {
+            HandlePlayerMoveSelector();
         }
     }
 }
