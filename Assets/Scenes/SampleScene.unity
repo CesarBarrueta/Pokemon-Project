@@ -8954,7 +8954,7 @@ MonoBehaviour:
   enemyHUD: {fileID: 380571815}
   battleDialogBox: {fileID: 1747498898}
   state: 0
-  timeBetweenClicks: 1
+  timeBetweenClicks: 0.2
 --- !u!1 &791124528
 GameObject:
   m_ObjectHideFlags: 0
@@ -15448,7 +15448,7 @@ MonoBehaviour:
   - {fileID: 782087572}
   ppText: {fileID: 1385788228}
   typeText: {fileID: 449607255}
-  charactersPerSecond: 10
+  charactersPerSecond: 30
   selectedColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!1 &1757287039
 GameObject:
@@ -15673,7 +15673,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _base: {fileID: 11400000, guid: c6c29924ecb220b4ab5bbdef33a49711, type: 2}
-  _level: 6
+  _level: 7
   isPlayer: 1
 --- !u!1 &1905236185
 GameObject:
