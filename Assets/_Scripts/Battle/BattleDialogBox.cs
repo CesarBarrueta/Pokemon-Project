@@ -54,6 +54,16 @@ public class BattleDialogBox : MonoBehaviour
         }
     }
 
+    public void SelectMove(int selectedMove, Move move)
+    {
+        for (int i = 0; i < movesTexts.Count; i++)
+        {
+            movesTexts[i].color = (i==selectedMove ? selectedColor : Color.black);
+        }
+        ppText.text = $"PP {move.Pp}/{move.Base.Pp}";
+        typeText.text = move.Base.Type.ToString().ToUpper();
+    }
+
     public void SetPokemonMoves(List<Move> moves)
     {
         for(int i = 0; i<movesTexts.Count; i++)
@@ -61,6 +71,9 @@ public class BattleDialogBox : MonoBehaviour
             if (i< moves.Count)
             {
                 movesTexts[i].text = moves[i].Base.Name;
+            } else
+            {
+                movesTexts[i].text = "---";
             }
         } 
     }
