@@ -47,7 +47,7 @@ public class Pokemon
 
             if(_moves.Count >= 4)
             {
-                break; //Comportamiento de qué hará si el pkmn tiene > 4 movimientos
+                break; //TODO: Comportamiento de qué hará si el pkmn tiene > 4 movimientos
             }
         }
     }
@@ -59,6 +59,30 @@ public class Pokemon
     public int SpDefense => Mathf.FloorToInt((_base.SpDefense * _level)/100.0f) + 1;
     public int Speed => Mathf.FloorToInt((_base.Speed * _level)/100.0f) + 1;
 
+
+    public bool RecieveDamage(Pokemon attacker, Move move)
+    {
+        float modifiers = UnityEngine.Random.Range(0.85f, 1.0f);
+        float baseDamage = ((((2 * attacker.Level/5f)+2f) * move.Base.Power * (float)(attacker.Attack / this.Defense))/50f)+2f;
+        int totalDamage = Mathf.FloorToInt(baseDamage * modifiers);
+        Debug.Log(totalDamage);
+        this.Hp -= totalDamage;
+
+        if(this.Hp <=0 )
+        {
+            this.Hp = 0;
+            return true;  
+        }
+
+        return false;
+            
+    }
+
+    public Move RandomMove()
+    {
+        int randId = UnityEngine.Random.Range(0,Moves.Count);
+        return Moves[randId]; 
+    }
     
 
 }
