@@ -41,13 +41,12 @@ public class BattleManager : MonoBehaviour
         enemyHUD.SetPkmnData(enemyUnit.Pokemon);
 
         yield return battleDialogBox.SetDialog($"A wild {enemyUnit.Pokemon.Base.Name} appeared!");
-        yield return new WaitForSeconds(1.0f);
 
         //TODO: Comparar speed de EnemyUnit y PlayerUnit para decidir quien ataca primero
         if(enemyUnit.Pokemon.Speed > playerUnit.Pokemon.Speed)
         {
             yield return battleDialogBox.SetDialog($"Enemy {enemyUnit.Pokemon.Base.Name} attacks first");
-            EnemyAction();
+            yield return EnemyAction();
         }else
         {
             yield return battleDialogBox.SetDialog($"{playerUnit.Pokemon.Base.Name} attacks first");
@@ -81,8 +80,21 @@ public class BattleManager : MonoBehaviour
         battleDialogBox.SelectMove(currentSelectedMove, playerUnit.Pokemon.Moves[currentSelectedMove]);
     }
 
-    public void EnemyAction()
+    IEnumerator EnemyAction()
     {
+        state = BattleState.EnemyMove;
+        Move move = enemyUnit.Pokemon.RandomMove();
+        yield return battleDialogBox.SetDialog($"Enemy {enemyUnit.Pokemon.Base.Name} used {move.Base.Name}");
+
+        bool pokemonFainted = playerUnit.Pokemon.RecieveDamage(enemyUnit.Pokemon, move);
+        playerHUD.UpdatePkmnData();
+        if(pokemonFainted)
+        {
+            yield return battleDialogBox.SetDialog($"{playerUnit.Pokemon.Base.Name} fainted!");
+        } else 
+        {
+            PlayerAction();
+        }
 
     }
 
@@ -153,6 +165,31 @@ public class BattleManager : MonoBehaviour
                 currentSelectedMove = oldSelectedMove;
             }
             battleDialogBox.SelectMove(currentSelectedMove, playerUnit.Pokemon.Moves[currentSelectedMove]);
+        }
+
+        //Seleccionar ataque
+        if(Input.GetAxisRaw("Submit") != 0)
+        {
+            timeSinceLastClick = 0;
+            battleDialogBox.ToggleMoves(false);
+            battleDialogBox.ToggleDialogText(true);
+            StartCoroutine(PerformPlayerMove());
+        }
+    }
+
+    IEnumerator PerformPlayerMove()
+    {
+        Move move = playerUnit.Pokemon.Moves[currentSelectedMove];
+        yield return battleDialogBox.SetDialog($"{playerUnit.Pokemon.Base.Name} used {move.Base.Name}");
+
+        bool pokemonFainted = enemyUnit.Pokemon.RecieveDamage(playerUnit.Pokemon, move);
+        enemyHUD.UpdatePkmnData();
+        if(pokemonFainted)
+        {
+            yield return battleDialogBox.SetDialog($"{enemyUnit.Pokemon.Base.Name} fainted!");
+        } else 
+        {
+            yield return EnemyAction();
         }
     }
 
