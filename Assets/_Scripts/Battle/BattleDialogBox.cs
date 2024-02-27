@@ -28,6 +28,7 @@ public class BattleDialogBox : MonoBehaviour
             dialogText.text += character;
             yield return new WaitForSeconds(1/charactersPerSecond);
         }
+        yield return new WaitForSeconds(1.0f);
     }
 
     public void ToggleDialogText(bool activated)
